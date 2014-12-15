@@ -1,4 +1,4 @@
-#inlcude "ATM.H"
+#include "ATM.H"
 #include <conio.h>
 #include <stdio.h>
 
