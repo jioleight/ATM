@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <conio.h>
 
-float fast_cash(char *acc)
+float inquire(int *acc)
 {
 
 }

@@ -1,8 +1,8 @@
 #include "ATM.H"
-#inlcude <stdio.h>
+#include <stdio.h>
 #include <conio.h>
 
-float inquire(int *acc)
+float inquire(char *acc)
 {
 
 }
