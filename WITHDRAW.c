@@ -7,10 +7,12 @@ float withdraw(char *acc)
 {
 	float wd, bal;
 	int day, mon, yr, hr, min, sec;
-	char *name;
+	char *name, choice = '', *accw[8];
 	FILE *f;
 	struct time t;
 	struct date d;
+	
+	strcpy(accw, acc);
 
 	f=fopen("manage.txt","a"); 
 	gettime(&t);
@@ -36,7 +38,7 @@ float withdraw(char *acc)
 	printf("\nDate: %d / %d / %d",mon,day,yr);
 	printf("\nTime: %d / %d / %d",hr,min,sec);
 	printf("\nName: %s",name);
-	printf("\nAccount Number: %s",acc);
+	printf("\nAccount Number: %s",accw);
 	printf("\nCurrent Balance: %.2f",bal);
 	printf("\nWithdrawal Amount: Php ");
 	scanf("%f",&wd);
@@ -44,14 +46,34 @@ float withdraw(char *acc)
 	{
 		bal=bal-wd;
 		printf("\n\nPhp %.2f was deducted",wd);
+		getch();
 	}
 	else
 	{
 		printf("\n\nInsufficient Funds!!! Press a key to continue....");
+		getch();
 	}
 	printf("\nRemaining Balance: Php %.2f",bal);
 	printf("\nAgain [y/n]? ");
+	/********************************************/
+	scanf("%c", &choice);
 	
+	if(choice == 'n' || choice == 'N')
+	{
+		menu(accw);
+		getch();
+	}
+	else if(choice == 'y' || choice == 'Y')
+	{
+		withdraw(accw);
+		getch();
+	}
+	else
+	{
+		printf("Invalid input!!");
+		menu(accw);
+	}
+	/*****************************************/
 	f=fopen("manage.txt","a");
 	gettime(&t);
 	getdate(&d);

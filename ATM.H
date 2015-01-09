@@ -3,7 +3,10 @@
 
 float inquire(char *acc);
 float withdraw(char *acc);
+float deposit(char *acc);
 float fast_cash(char *acc);
-float history(char *acc);
+void history(char *acc);
+
+menu(char *acc);
 
 #endif

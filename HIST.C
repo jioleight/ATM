@@ -19,12 +19,12 @@ struct atm
 	int yr,mo,day,hr,min,sec;
 };
 
-void hist(char **acc) 
+void history(char *acc) 
 {
 	int i=0,h=1,x,y,sm,sd,sy,em,ed,ey,id=0,rs=0,prntH;
 	long SD,ED,TD,dd;
 	float debit,credit,pbal=0;
-	char *buf=" ",k=' ',*mmm,seD[17]="mmddyyyymmddyyyy ",cd[17],r=' ';
+	char *buf=" ",k=' ',*mmm,seD[17]="mmddyyyymmddyyyy ",cd[17],r=' ', *acch[8];
 	FILE *f;
 	struct atm a,tmp,m;
 	struct date d;
@@ -32,6 +32,7 @@ void hist(char **acc)
 	sprintf(cd,seD); 
 	strcpy(m.ln,"   ");
 	strcpy(m.fn,"   ");
+	strcpy(acch, acc);
 	pbal=0;
 	while(h!=0)
 	{
@@ -44,7 +45,7 @@ void hist(char **acc)
 			printf("\t\t\tDate: %02d/%02d/%d\n",d.da_mon,d.da_day,d.da_year);
 			printf("\t\t\tTime: %02d:%02d:%02d\n",t.ti_hour,t.ti_min,t.ti_sec);
 			printf("\t\t\tName: %s, %s\n",m.ln,m.fn);
-			printf("\t\t\tAccount Number: %s\n",*acc);
+			printf("\t\t\tAccount Number: %s\n", acch);
 			printf("\t\t\tCurrent Balance: PHP%.2f\n",pbal);
 			printf("\t\t\t===OPTION===\n");
 			printf("\t\t\t[1] Current Month");
@@ -122,7 +123,7 @@ void hist(char **acc)
 				default: printf("\n\n\t\tInvalid Input!!! Press a key to continue..."); break;
 			}
 			pbal=0;				
-			f=fopen("hist.dat","r");
+			f=fopen("hist.dat","a+");
 			while((fscanf(f,"%d / ",&a.mo))!=EOF)
 			{
 				fscanf(f,"%d / %d\n",&a.day,&a.yr);
@@ -182,4 +183,5 @@ void hist(char **acc)
 		}		
 		if(i>17) i=17; if(i<0) i=0;		
 	}
+	menu(acc);
 }

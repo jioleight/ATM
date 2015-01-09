@@ -3,21 +3,24 @@
 #include <stdio.h>
 
 struct userdb{
-	char accdb;
-	int passdb; 
+	char accdb[9];
+	char passdb[5]; 
 };
+
+
 accview();
-menu();
-int req(char *acc, int *password);
-main(){
-	struct userdb udb1, udb2, udb3,udb4,udb5;
-	int choice, res;
+int req(char *acc, char *password);
+char quit(char *acc);
+
+main()
+{
+	struct userdb udb[5] = {{"09303470", "1234"},{"09303358", "1234"},{"09305169", "1234"},{"09300717", "1234"},{"09301780", "1234"}};
+	int choice, res, i;
 	char *acc[8];
-	int *password[4];
-	clrscr();
+	char *password[4];
+	FILE *db;
 	
-	strcpy(udb1.accdb, "09303470");
-	strcpy(udb1.passdb, "1234");
+	clrscr();
 	
 	accview();
 	
@@ -28,8 +31,9 @@ main(){
 	gets(&password);
 	
 	res = req(acc, password);
+
 	
-	if(res == 1)
+	if(res == 1)/*check fields*/
 	{
 		gotoxy(23, 15);
 		printf("Does not meet requirements");
@@ -38,11 +42,57 @@ main(){
 	}
 	else if(res == 0)/*login*/
 	{
-		if(strcmp(udb1.accdb, acc) == 1)
+		for(i = 0; i < 5; i++)
 		{
-			puts("success");
+			if(strcmp(acc, udb[i].accdb) == 0)
+			{	
+				/*
+				gotoxy(1, 22);
+				puts("correct acc");
+				printf("%s - %s", udb[i].accdb, acc);
+				*/
+				
+				if(strcmp(password, udb[i].passdb) == 0)
+				{
+					sleep(1);
+					menu(udb[i].accdb);
+					/*
+					gotoxy(1, 24);
+					puts("correct pass");
+					printf("%s - %s", udb[i].passdb, password);
+					*/
+				}
+				else
+				{
+					gotoxy(28, 15);
+					puts("Sorry, invalid password");
+					sleep(2);
+					main();
+				}
+				res = 0;
+				break;
+			}
+			/*
+			else if(i == 5 || strcmp(acc, udb[5-i].accdb) != 0)
+			{
+				gotoxy(20, 15);
+				printf("Sorry, account # %s is not existing", acc);
+			}
+			*/
+			else
+			{
+				res = 1;
+			}
+		}
+		if(res == 1)
+		{
+			gotoxy(20, 15);
+			printf("Sorry, account # %s is not existing", acc);
+			sleep(2);
+			main();
 		}
 	}
+
 	getch();
 	return 0;
 }
@@ -58,10 +108,81 @@ accview()
 	printf("===============================");
 	
 }
-menu()
+menu(char *acc)
 {
+	int choice;
+	char *accm[8];
+	clrscr();
+	
+	strcpy(accm, acc);
+	
+	gotoxy(24, 7);
+	printf("========== MAIN MENU ==========");
+	gotoxy(24, 8);
+	printf("[1] Inquire");
+	gotoxy(24, 9);
+	printf("[2] Withdraw");
+	gotoxy(24, 10);
+	printf("[3] Deposit");
+	gotoxy(24, 11);
+	printf("[4] Fast Cash");
+	gotoxy(24, 12);
+	printf("[5] History");
+	gotoxy(24, 13);
+	printf("[6] Exit");
+	gotoxy(24, 14);
+	printf("Choice? ");
+	gotoxy(24, 15);
+	printf("===============================");
+	
+	
+	gotoxy(33, 14);
+	scanf("%i", &choice);
+	
+	switch(choice)
+	{
+		case 1:
+			/*inquire(acc);*/
+			break;
+		case 2:
+			withdraw(accm);
+			break;
+		case 3:
+			/*deposit(acc);*/
+			break;
+		case 4:
+			/*fast_cash(acc);*/
+			break;
+		case 5:
+			history(accm);
+			break;
+		case 6:
+			quit(accm);
+			sleep(2);
+			return 0;
+			break;
+		default:	
+			gotoxy(24, 18);
+			printf("Invalid input!!!");
+			sleep(1);
+			menu(accm);
+			break;
+	}
+	
 }
-int req(char *acc, int *password)
+char quit(char *acc)
+{	
+	char *accq[8];
+	clrscr();
+	strcpy(accq, acc);
+	gotoxy(24, 10);
+	printf("Thank you for Bbanking with us");
+	gotoxy(24, 11);
+	printf("Have a nice day %s ", accq);
+	gotoxy(24, 12);
+	printf("Good bye!");
+}
+int req(char *acc, char *password)
 {
 	if(strlen(acc) != 8 || strlen(password) != 4)
 	{
