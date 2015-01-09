@@ -7,7 +7,7 @@ float inquire(char *acc)
 {
 	float bal;
 	int day, mon, yr, hr, min, sec;
-	char *name;
+	char *name, *acci[8];
 	FILE *f;
 	struct time t;
 	struct date d;
@@ -21,13 +21,16 @@ float inquire(char *acc)
 	fclose(f);
 
 	clrscr();
+	
+	strcpy(acci, acc);
 
 	printf("=====BALANCE INQUIRY=====");
 	printf("\nDate: %d / %d / %d",mon,day,yr);
 	printf("\nTime: %d / %d / %d",hr,min,sec);
 	printf("\nName: %s",name);
-	printf("\nAccount Number: %s",acc);
+	printf("\nAccount Number: %s",acci);
 	printf("\nCurrent Balance: %.2f",bal);
 	printf("\nPress any key to return to main menu");
 	getch();
+	menu(acci);
 }

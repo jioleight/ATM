@@ -142,7 +142,7 @@ menu(char *acc)
 	switch(choice)
 	{
 		case 1:
-			/*inquire(acc);*/
+			inquire(accm);
 			break;
 		case 2:
 			withdraw(accm);
