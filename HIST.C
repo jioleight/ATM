@@ -1,6 +1,6 @@
 #include "ATM.H"
 #include<stdio.h>
-#include <stdlib.h>
+#include<stdlib.h>
 #include<dos.h>
 
 struct atm
@@ -14,34 +14,21 @@ void hist(char **acc)
 {
 	int i=0,h=1,x,y,sm,sd,sy,em,ed,ey,id=0,rs=0,prntH;
 	long SD,ED,TD,dd;
-	float debit,credit,pbal;
-	char *buf=" ",k=' ',*mmm,seD[17]="mmddyyyymmddyyyy ",cd[17]="mmddyyyymmddyyyy ",r=' ',*er;
+	float debit,credit,pbal=0;
+	char *buf=" ",k=' ',*mmm,seD[17]="mmddyyyymmddyyyy ",cd[17],r=' ';
 	FILE *f;
 	struct atm a,tmp,m;
 	struct date d;
 	struct time t;
-	
-	
+	sprintf(cd,seD); 
+	strcpy(m.ln,"   ");
+	strcpy(m.fn,"   ");
+	pbal=0;
 	while(h!=0)
 	{
 		while(!kbhit())
 		{	clrscr(); prntH=0;
-			f=fopen("hist.dat","r");
-			while((fscanf(f,"%d / ",&tmp.mo))!=EOF)
-			{
-				fscanf(f,"%d / %d\n",&tmp.day,&tmp.yr);
-				fscanf(f,"%d : %d : %d\n",&tmp.hr,&tmp.min,&tmp.sec);	
-				fscanf(f,"%[^\n]\ns\n",tmp.acc);
-				fscanf(f,"%[^\n]\ns\n",tmp.ln);
-				fscanf(f,"%[^\n]\ns\n",tmp.fn);
-				fscanf(f,"%f\n\n",&tmp.bal);
-				if(!strcmp(*acc,tmp.acc))
-				{
-					strcpy(m.ln,tmp.ln);
-					strcpy(m.fn,tmp.fn);
-					pbal=tmp.bal;
-				}
-			}	fclose(f);			 
+					 
 			gettime(&t);
 			getdate(&d);
 			printf("\n\t\t\t=====HISTORY=====\n");
@@ -125,32 +112,31 @@ void hist(char **acc)
 				case ' ': break;
 				default: printf("\n\n\t\tInvalid Input!!! Press a key to continue..."); break;
 			}
-			if(prntH==1)
+			pbal=0;				
+			f=fopen("hist.dat","r");
+			while((fscanf(f,"%d / ",&a.mo))!=EOF)
 			{
-				pbal=0;				
-				f=fopen("hist.dat","r");
-				while((fscanf(f,"%d / ",&a.mo))!=EOF)
+				fscanf(f,"%d / %d\n",&a.day,&a.yr);
+				fscanf(f,"%d : %d : %d\n",&a.hr,&a.min,&a.sec);	
+				fscanf(f,"%[^\n]\ns\n",a.acc);
+				fscanf(f,"%[^\n]\ns\n",a.ln);
+				fscanf(f,"%[^\n]\ns\n",a.fn); 
+				fscanf(f,"%f\n\n",&a.bal);
+				sprintf(buf,"%d%02d%02d",a.yr,a.mo,a.day); dd=atol(buf);
+				if(SD<=dd&&ED>=dd&&(!strcmp(a.acc,*acc))&&prntH==1)
 				{
-					fscanf(f,"%d / %d\n",&a.day,&a.yr);
-					fscanf(f,"%d : %d : %d\n",&a.hr,&a.min,&a.sec);	
-					fscanf(f,"%[^\n]\ns\n",a.acc);
-					fscanf(f,"%[^\n]\ns\n",a.ln);
-					fscanf(f,"%[^\n]\ns\n",a.fn); 
-					fscanf(f,"%f\n\n",&a.bal);
-					sprintf(buf,"%d%02d%02d",a.yr,a.mo,a.day); dd=atol(buf);
-					if(SD<=dd&&ED>=dd&&!strcmp(a.acc,*acc))
-					{
-						if(pbal>a.bal){credit=0; debit=pbal-a.bal;}
-						else{credit=a.bal-pbal; debit=0;}
-						printf("\n\t%02d/%02d/%d\t%02d:%02d:%02d\t%.2f\t\t",a.mo,a.day,a.yr,a.hr,a.min,a.sec,debit);
-						gotoxy(57,y); printf("%.2f",credit); y++;
-					}
-					if(!strcmp(*acc,a.acc))
-					{
-						pbal=a.bal;
-					}
-				}	fclose(f);
-			}
+					if(pbal>a.bal){credit=0; debit=pbal-a.bal;}
+					else{credit=a.bal-pbal; debit=0;}
+					printf("\n\t%02d/%02d/%d\t%02d:%02d:%02d\t%.2f\t\t",a.mo,a.day,a.yr,a.hr,a.min,a.sec,debit);
+					gotoxy(57,y); printf("%.2f",credit); y++;
+				}
+				if(!strcmp(*acc,a.acc))
+				{
+					pbal=a.bal;
+					strcpy(m.ln,a.ln);
+					strcpy(m.fn,a.fn);
+				}
+			}	fclose(f);
 			if(h==2) printf("\n\n\tInvalid Input!!! Press a key to continue...");
 			if(rs==1) printf("\n\n\tAgain [y/n]? %c",r); 
 			sleep(1);
