@@ -1,17 +1,27 @@
+#include"ATM.H"
 #include<stdio.h>
-#include<conio.h>
-#include<string.h>
 #include <stdlib.h>
 #include<dos.h>
 
-float wdrw()
+float withdraw(char *acc)
 {
 	float wd, bal;
 	int day, mon, yr, hr, min, sec;
-	char *name, *acc;
+	char *name;
 	FILE *f;
 	struct time t;
 	struct date d;
+
+	f=fopen("manage.txt","a");
+	gettime(&t);
+	getdate(&d);
+	fprintf(f,"%02d / %02d / %04d\n",d.da_mon,d.da_day,d.da_year);
+	fprintf(f,"%02d : %02d : %02d\n",t.ti_hour,t.ti_min,t.ti_sec);
+	fprintf(f,"%s",acc);
+	fprintf(f,"\n%s",name);
+	fprintf(f,"\n%.2f",bal);
+	fprintf(f,"\n");
+	fclose(f);
 	
 	f=fopen("manage.txt","r");
 	fscanf(f,"%d / %d / %d\n",&mon,&day,&yr);
@@ -54,30 +64,3 @@ float wdrw()
 	fprintf(f,"\n");
 	fclose(f);
 }
-
-main()
-{
-	FILE *f;
-	float bal=1000;
-	char *name="KEVIN";
-	char *acc="09305169";
-	struct time t;
-	struct date d;
-	
-	clrscr();
-	
-	f=fopen("manage.txt","a");
-	gettime(&t);
-	getdate(&d);
-	fprintf(f,"%02d / %02d / %04d\n",d.da_mon,d.da_day,d.da_year);
-	fprintf(f,"%02d : %02d : %02d\n",t.ti_hour,t.ti_min,t.ti_sec);
-	fprintf(f,"%s",acc);
-	fprintf(f,"\n%s",name);
-	fprintf(f,"\n%.2f",bal);
-	fprintf(f,"\n");
-	fclose(f);
-	
-	wdrw();
-	getch();
-}
-
