@@ -1,3 +1,12 @@
+
+/* * * * * * * * * * * * * * * * * * *
+* Name:        Gerald Kim Ico			 *
+* Project:     ATM    					 *
+* File:        HIST.C	   		    *
+* Description: displays transaction  *
+*              history of the user	 *
+* Date:        1/10/15			  	    *
+ * * * * * * * * * * * * * * * * * * */
 #include "ATM.H"
 #include<stdio.h>
 #include<stdlib.h>
